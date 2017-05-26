@@ -17,10 +17,12 @@ ENV PHPIZE_DEPS \
 		libpcre3-dev \
 		make \
 		pkg-config \
+		bison \
 		re2c
 RUN apt-get update && apt-get install -y \
 		$PHPIZE_DEPS \
 		ca-certificates \
+		wget \
 		curl \
 		libedit2 \
 		libsqlite3-0 \
@@ -53,13 +55,6 @@ ENV PHP_SHA256="a363185c786432f75e3c7ff956b49c3369c3f6906a6b10459f8d1ddc22f70805
 
 RUN set -xe; \
 	\
-	fetchDeps=' \
-		wget \
-	'; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends $fetchDeps; \
-	rm -rf /var/lib/apt/lists/*; \
-	\
 	mkdir -p /usr/src; \
 	cd /usr/src; \
 	\
@@ -80,9 +75,7 @@ RUN set -xe; \
 		done; \
 		gpg --batch --verify php.tar.xz.asc php.tar.xz; \
 		rm -r "$GNUPGHOME"; \
-	fi; \
-	\
-	apt-get purge -y --auto-remove $fetchDeps
+	fi;
 
 COPY docker-php-source /usr/local/bin/
 
