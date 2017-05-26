@@ -70,6 +70,12 @@ RUN set -xe \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
+	&& cd /tmp  && wget -c --no-check-certificate https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz \
+    && tar xzf libiconv-1.15.tar.gz \
+    && cd libiconv-1.15 \
+    && ./configure --prefix=/usr \
+    && make && make install \
+    && cd ../ && rm -rf /tmp/libiconv-1.15
 	&& cd /usr/src/php \
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
@@ -80,7 +86,7 @@ RUN set -xe \
 		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
 		--with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
 		--with-png-dir --with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt \
-		--with-mhash --with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
+		--with-mhash --with-xmlrpc --with-iconv --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
 		--with-freetype-dir \
 		\
 		--disable-cgi --disable-rpath \
@@ -98,7 +104,10 @@ RUN set -xe \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
-	&& docker-php-source delete
+	&& docker-php-source delete \
+	&& pecl install redis-3.1.2 \
+	&& pecl install memcached-3.0.3 \
+	&& docker-php-ext-enable redis memcached
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 

@@ -27,7 +27,7 @@ RUN set -x \
 
 ENV COMPOSER_HOME="/root/.composer" \
     PATH=/root/.composer/vendor/bin:$PATH
-    
+
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
 
@@ -129,7 +129,10 @@ RUN set -xe \
 	)" \
 	&& apk add --no-cache --virtual .php-rundeps $runDeps \
 	\
-	&& apk del .build-deps
+	&& apk del .build-deps \
+	&& pecl install redis-3.1.2 \
+	&& pecl install memcached-3.0.3 \
+	&& docker-php-ext-enable redis memcached
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
