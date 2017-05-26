@@ -83,7 +83,7 @@ RUN set -xe \
 		--with-curl --with-kerberos --with-libxml-dir --with-bz2 \
 		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
 		--with-gmp \
-		--with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir --with-png-dir \
+		--with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr --with-png-dir \
 		--with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt --with-mhash \
 		--with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit --with-freetype-dir \
 		\
