@@ -97,8 +97,11 @@ RUN set -xe \
 		libmcrypt-dev \
 		libfreetype6-dev \
 		libjpeg-dev \
+		libsasl2-dev \
+		libevent-dev \
 		libjpeg62-turbo-dev \
 		libpng12-dev \
+		libxslt-dev \
 		libmemcached-dev \
 		libgmp-dev \
 		libbz2-dev \
@@ -130,9 +133,15 @@ RUN set -xe \
 		--with-curl \
 		--with-kerberos \
 		--enable-bcmath \
+		--with-libxml-dir \
 		--with-bz2 \
 		--enable-calendar \
 		--enable-exif \
+		--enable-mbregex \
+		--enable-shmop \
+		--enable-soap \
+		--enable-sockets \
+		--with-icu-dir=/usr \
 		--with-png-dir \
 		--with-gd \
 		--with-jpeg-dir \
