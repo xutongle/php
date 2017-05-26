@@ -10,7 +10,7 @@ FROM alpine:3.4
 ENV PHPIZE_DEPS \
 		autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c coreutils \
 		pcre-dev curl-dev libedit-dev sqlite-dev libxml2-dev openssl-dev \
-		icu-dev libmcrypt-dev freetype-dev jpeg-dev libpng-dev \
+		icu-dev libmcrypt-dev freetype-dev jpeg-dev libpng-dev gettext-dev \
 		libgsasl-dev libevent-dev libxslt-dev libmemcached-dev bzip2-dev zlib-dev libxml2-dev \
 		gmp-dev
 RUN apk add --no-cache --virtual .persistent-deps \
@@ -96,7 +96,8 @@ RUN set -xe \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
 		--with-curl --with-kerberos --with-libxml-dir --with-bz2 \
 		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
-		--with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
+#--with-tidy
+		--with-gmp --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
 		--with-png-dir --with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt \
 		--with-mhash --with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
 		--with-freetype-dir \
@@ -107,9 +108,6 @@ RUN set -xe \
 		--enable-mbregex --enable-shmop --enable-soap --enable-sockets --enable-sysvmsg --enable-sysvsem \
 		--enable-sysvshm --enable-wddx --enable-pcntl --enable-fileinfo --enable-intl --enable-opcache \
 		--enable-cli --enable-gd-native-ttf --enable-inline-optimization --enable-zip --enable-xml \
-		\
-# bundled pcre is too old for s390x (which isn't exactly a good sign)
-# /usr/src/php/ext/pcre/pcrelib/pcre_jit_compile.c:65:2: error: #error Unsupported architecture
 		--with-pcre-regex=/usr \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
