@@ -8,25 +8,17 @@ FROM debian:jessie
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
-		autoconf \
-		dpkg-dev \
-		file \
-		g++ \
-		gcc \
-		libc-dev \
-		libpcre3-dev \
-		make \
-		pkg-config \
-		bison \
-		re2c
+		autoconf dpkg-dev file g++ gcc make libc-dev pkg-config bison re2c \
+		libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev \
+		libicu-dev libmcrypt-dev libfreetype6-dev libjpeg-dev libpnglite-dev \
+		libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev \
+		libtidy-dev libxslt-dev libmemcached-dev libbz2-dev zlib1g-dev libxml2-dev \
+		libiconv-hook-dev libedit2-dev\
+		libgmp-dev
 RUN apt-get update && apt-get install -y \
 		$PHPIZE_DEPS \
-		ca-certificates \
-		wget \
-		curl \
-		libedit2 \
+		ca-certificates wget curl \
 		libsqlite3-0 \
-		libxml2 \
 		xz-utils \
 	--no-install-recommends && rm -r /var/lib/apt/lists/*
 
@@ -80,33 +72,6 @@ RUN set -xe; \
 COPY docker-php-source /usr/local/bin/
 
 RUN set -xe \
-	&& buildDeps=" \
-		$PHP_EXTRA_BUILD_DEPS \
-		libcurl4-openssl-dev \
-		libedit-dev \
-		libsqlite3-dev \
-		libssl-dev \
-		libicu-dev \
-		libmcrypt-dev \
-		libfreetype6-dev \
-		libjpeg-dev \
-		libpnglite-dev \
-		libsasl2-dev \
-		libmhash-dev \
-		libevent-dev \
-		libjpeg62-turbo-dev \
-		libpng12-dev \
-		libtidy-dev \
-		libxslt-dev \
-		libmemcached-dev \
-		libgmp-dev \
-		libiconv-hook-dev \
-		libbz2-dev \
-		zlib1g-dev \
-		libxml2-dev \
-	" \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
-	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
@@ -117,70 +82,21 @@ RUN set -xe \
 		--build="$gnuArch" \
 		--with-config-file-path="$PHP_INI_DIR" \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
-		--with-curl \
-		--with-kerberos \
-		--with-libxml-dir \
-		--with-bz2 \
-		--with-mysqli=mysqlnd \
-		--with-pdo-mysql=mysqlnd \
-		--with-pdo-sqlite \
-		--with-sqlite3 \
-		--with-gettext \
+		--with-curl --with-kerberos --with-libxml-dir --with-bz2 \
+		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
 		--with-gmp \
-		--with-tidy \
-		--with-pcre-dir \
-		--with-readline \
-		--with-zlib-dir \
-		--with-icu-dir=/usr \
-		--with-png-dir \
-		--with-gd \
-		--with-jpeg-dir \
-		--with-libedit \
-		--with-openssl \
-		--with-zlib \
-		--with-mcrypt \
-		--with-mhash \
-		--with-xmlrpc \
-		--with-libedit \
-		--with-iconv-dir \
-		--with-xsl \
-		--with-pcre-regex \
-		--with-pcre-jit \
-		--with-freetype-dir \
+		--with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir --with-png-dir \
+		--with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt --with-mhash \
+		--with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit --with-freetype-dir \
 		\
 		--disable-cgi \
 		--disable-rpath \
 		\
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
-		--enable-ftp \
-# --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
-		--enable-mbstring \
-# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
-		--enable-mysqlnd \
+		--enable-ftp --enable-mbstring --enable-mysqlnd --enable-bcmath --enable-calendar --enable-exif \
+		--enable-mbregex --enable-shmop --enable-soap --enable-sockets --enable-sysvmsg --enable-sysvsem \
+		--enable-sysvshm --enable-wddx --enable-pcntl --enable-fileinfo --enable-intl --enable-opcache \
+		--enable-cli --enable-gd-native-ttf --enable-inline-optimization --enable-zip --enable-xml \
 		\
-		--enable-bcmath \
-		--enable-calendar \
-		--enable-exif \
-		--enable-mbregex \
-		--enable-shmop \
-		--enable-soap \
-		--enable-sockets \
-		--enable-sysvmsg \
-		--enable-sysvsem \
-		--enable-sysvshm \
-		--enable-wddx \
-		--enable-pcntl \
-		--enable-fileinfo \
-		--enable-intl \
-		--enable-opcache \
-		--enable-cli \
-		--enable-gd-native-ttf \
-		--enable-inline-optimization \
-		--enable-zip \
-		--enable-xml \
-		\
-# bundled pcre is too old for s390x (which isn't exactly a good sign)
-# /usr/src/php/ext/pcre/pcrelib/pcre_jit_compile.c:65:2: error: #error Unsupported architecture
 		--with-pcre-regex=/usr \
 		--with-libdir="lib/$gnuArch" \
 		\
@@ -189,9 +105,7 @@ RUN set -xe \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
-	&& docker-php-source delete \
-	\
-	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
+	&& docker-php-source delete
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
