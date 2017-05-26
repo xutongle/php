@@ -3,8 +3,10 @@ FROM alpine:3.4
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
 		autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c coreutils \
-		pcre-dev curl-dev libedit-dev libxml2-dev gmp-dev openssl-dev sqlite-dev \
-		libedit-dev libmcrypt-dev libxslt-dev
+		pcre-dev curl-dev libedit-dev sqlite-dev libxml2-dev openssl-dev \
+		icu-dev libmcrypt-dev freetype-dev jpeg-dev libpng-dev \
+		libgsasl-dev libevent-dev libxslt-dev libmemcached-dev bzip2-dev zlib-dev libxml2-dev \
+		gmp-dev
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates \
 		curl \
