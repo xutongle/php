@@ -107,6 +107,7 @@ RUN set -xe \
 		--with-libdir="lib/$gnuArch" \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
+#	&& make -j "$(nproc)" \
 	&& make ZEND_EXTRA_LIBS='-liconv' \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \

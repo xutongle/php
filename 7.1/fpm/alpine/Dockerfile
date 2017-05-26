@@ -92,6 +92,12 @@ RUN set -xe \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
+	&& cd /tmp  && wget -c --no-check-certificate https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz \
+	&& tar xzf libiconv-1.15.tar.gz \
+	&& cd libiconv-1.15 \
+	&& ./configure --prefix=/usr \
+	&& make && make install \
+	&& cd ../ && rm -rf /tmp/libiconv-1.15
 	&& cd /usr/src/php \
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
@@ -115,7 +121,8 @@ RUN set -xe \
 		--with-pcre-regex=/usr \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
-	&& make -j "$(nproc)" \
+#	&& make -j "$(nproc)" \
+	&& make ZEND_EXTRA_LIBS='-liconv'
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
