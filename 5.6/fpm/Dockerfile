@@ -13,8 +13,7 @@ ENV PHPIZE_DEPS \
 		libicu-dev libmcrypt-dev libfreetype6-dev libjpeg-dev libpnglite-dev \
 		libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev \
 		libtidy-dev libxslt-dev libmemcached-dev libbz2-dev zlib1g-dev libxml2-dev \
-		libiconv-hook-dev libedit-dev \
-		libgmp-dev
+		libiconv-hook-dev libedit-dev libt1-dev libgmp3-dev
 RUN apt-get update && apt-get install -y \
 		$PHPIZE_DEPS \
 		ca-certificates wget curl \
