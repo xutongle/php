@@ -97,7 +97,7 @@ RUN set -xe \
 	&& cd libiconv-1.15 \
 	&& ./configure --prefix=/usr \
 	&& make && make install \
-	&& cd ../ && rm -rf /tmp/libiconv-1.15
+	&& cd ../ && rm -rf /tmp/libiconv-1.15 \
 	&& cd /usr/src/php \
 	&& gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
 	&& ./configure \
