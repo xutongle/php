@@ -82,13 +82,12 @@ RUN set -xe \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
 		--with-curl --with-kerberos --with-libxml-dir --with-bz2 \
 		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
-		--with-gmp \
-		--with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr --with-png-dir \
-		--with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt --with-mhash \
-		--with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit --with-freetype-dir \
+		--with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
+		--with-png-dir --with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt \
+		--with-mhash --with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
+		--with-freetype-dir \
 		\
-		--disable-cgi \
-		--disable-rpath \
+		--disable-cgi --disable-rpath \
 		\
 		--enable-ftp --enable-mbstring --enable-mysqlnd --enable-bcmath --enable-calendar --enable-exif \
 		--enable-mbregex --enable-shmop --enable-soap --enable-sockets --enable-sysvmsg --enable-sysvsem \

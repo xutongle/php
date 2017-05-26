@@ -108,20 +108,19 @@ RUN set -xe \
 		--build="$gnuArch" \
 		--with-config-file-path="$PHP_INI_DIR" \
 		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
+		--with-curl --with-kerberos --with-libxml-dir --with-bz2 \
+		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
+		--with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
+		--with-png-dir --with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt \
+		--with-mhash --with-xmlrpc --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
+		--with-freetype-dir \
 		\
-		--disable-cgi \
+		--disable-cgi --disable-rpath \
 		\
-# --enable-ftp is included here because ftp_ssl_connect() needs ftp to be compiled statically (see https://github.com/docker-library/php/issues/236)
-		--enable-ftp \
-# --enable-mbstring is included here because otherwise there's no way to get pecl to use it properly (see https://github.com/docker-library/php/issues/195)
-		--enable-mbstring \
-# --enable-mysqlnd is included here because it's harder to compile after the fact than extensions are (since it's a plugin for several extensions, not an extension in itself)
-		--enable-mysqlnd \
-		\
-		--with-curl \
-		--with-libedit \
-		--with-openssl \
-		--with-zlib \
+		--enable-ftp --enable-mbstring --enable-mysqlnd --enable-bcmath --enable-calendar --enable-exif \
+		--enable-mbregex --enable-shmop --enable-soap --enable-sockets --enable-sysvmsg --enable-sysvsem \
+		--enable-sysvshm --enable-wddx --enable-pcntl --enable-fileinfo --enable-intl --enable-opcache \
+		--enable-cli --enable-gd-native-ttf --enable-inline-optimization --enable-zip --enable-xml \
 		\
 # bundled pcre is too old for s390x (which isn't exactly a good sign)
 # /usr/src/php/ext/pcre/pcrelib/pcre_jit_compile.c:65:2: error: #error Unsupported architecture
