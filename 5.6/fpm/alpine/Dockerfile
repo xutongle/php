@@ -15,6 +15,7 @@ ENV PHPIZE_DEPS \
 		gmp-dev
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates \
+		libintl \
 		curl \
 		tar \
 		xz
