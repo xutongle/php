@@ -118,6 +118,8 @@ RUN set -xe \
 		--enable-mysqlnd \
 		\
 		--with-curl \
+		--with-kerberos \
+		--enable-bcmath \
 		--with-libedit \
 		--with-openssl \
 		--with-zlib \
