@@ -86,6 +86,15 @@ RUN set -xe \
 		libedit-dev \
 		libsqlite3-dev \
 		libssl-dev \
+		libicu-dev \
+		libmcrypt-dev \
+		libfreetype6-dev \
+		libjpeg-dev \
+		libjpeg62-turbo-dev \
+		libpng12-dev \
+		libmemcached-dev \
+		libgmp-dev \
+		zlib1g-dev \
 		libxml2-dev \
 	" \
 	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
