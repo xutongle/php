@@ -10,7 +10,7 @@ FROM alpine:3.4
 ENV PHPIZE_DEPS \
 		autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c coreutils \
 		pcre-dev curl-dev libedit-dev sqlite-dev libxml2-dev openssl-dev \
-		icu-dev libmcrypt-dev freetype-dev jpeg-dev libpng-dev \
+		icu-dev libmcrypt-dev freetype-dev jpeg-dev libpng-dev gettext-dev \
 		libgsasl-dev libevent-dev libxslt-dev libmemcached-dev bzip2-dev zlib-dev libxml2-dev \
 		gmp-dev
 RUN apk add --no-cache --virtual .persistent-deps \
@@ -113,7 +113,7 @@ RUN set -xe \
 		--with-pcre-regex=/usr \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
-	&& make ZEND_EXTRA_LIBS='-liconv' \
+	&& make -j "$(nproc)" \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
 	&& make clean \

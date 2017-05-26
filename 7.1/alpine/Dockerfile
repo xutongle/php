@@ -113,7 +113,7 @@ RUN set -xe \
 		--with-pcre-regex=/usr \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
-	&& make ZEND_EXTRA_LIBS='-liconv' \
+	&& make -j "$(nproc)" \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
