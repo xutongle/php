@@ -8,16 +8,9 @@ FROM alpine:3.4
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS \
-		autoconf \
-		dpkg-dev dpkg \
-		file \
-		g++ \
-		gcc \
-		libc-dev \
-		make \
-		pcre-dev \
-		pkgconf \
-		re2c
+		autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c coreutils \
+		pcre-dev curl-dev libedit-dev libxml2-dev gmp-dev openssl-dev sqlite-dev \
+		libedit-dev libmcrypt-dev libxslt-dev
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates \
 		curl \
@@ -28,10 +21,6 @@ RUN apk add --no-cache --virtual .persistent-deps \
 RUN set -x \
 	&& addgroup -g 82 -S www-data \
 	&& adduser -u 82 -D -S -G www-data www-data
-# 82 is the standard uid/gid for "www-data" in Alpine
-# http://git.alpinelinux.org/cgit/aports/tree/main/apache2/apache2.pre-install?h=v3.3.2
-# http://git.alpinelinux.org/cgit/aports/tree/main/lighttpd/lighttpd.pre-install?h=v3.3.2
-# http://git.alpinelinux.org/cgit/aports/tree/main/nginx-initscripts/nginx-initscripts.pre-install?h=v3.3.2
 
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
@@ -91,12 +80,6 @@ COPY docker-php-source /usr/local/bin/
 RUN set -xe \
 	&& apk add --no-cache --virtual .build-deps \
 		$PHPIZE_DEPS \
-		coreutils \
-		curl-dev \
-		libedit-dev \
-		libxml2-dev \
-		openssl-dev \
-		sqlite-dev \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
@@ -127,7 +110,7 @@ RUN set -xe \
 		--with-pcre-regex=/usr \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
-	&& make -j "$(nproc)" \
+	&& make ZEND_EXTRA_LIBS='-liconv' \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
 	&& make clean \
