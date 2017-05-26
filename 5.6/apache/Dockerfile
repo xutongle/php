@@ -159,7 +159,7 @@ RUN set -xe \
 		libpng12-dev \
 		libmemcached-dev \
 		libgmp-dev \
-		bzip2-dev \
+		libzip2-dev \
 		zlib1g-dev \
 		libxml2-dev \
 	" \
