@@ -9,10 +9,12 @@ ENV PHPIZE_DEPS \
 		gmp-dev
 RUN apk add --no-cache --virtual .persistent-deps \
 		ca-certificates \
+		wget \
 		libintl \
 		curl \
 		tar \
-		xz
+		xz \
+		&& update-ca-certificates
 
 # ensure www-data user exists
 RUN set -x \
