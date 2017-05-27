@@ -68,6 +68,9 @@ RUN set -xe; \
 		done; \
 		gpg --batch --verify php.tar.xz.asc php.tar.xz; \
 		rm -r "$GNUPGHOME"; \
+	fi; \
+	if [ `echo "${PHP_VERSION} 7.0" | awk '{if($1<$2) {print 0} else {print 1}}'` -eq 0 ] ; then \
+		ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h; \
 	fi;
 
 COPY docker-php-source /usr/local/bin/
@@ -93,8 +96,7 @@ RUN set -xe \
 		--with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --with-gettext \
 		--with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-icu-dir=/usr \
 		--with-png-dir --with-gd --with-jpeg-dir --with-libedit --with-openssl --with-zlib --with-mcrypt \
-		--with-mhash --with-xmlrpc --with-iconv --with-iconv-dir --with-xsl --with-pcre-regex --with-pcre-jit \
-		--with-freetype-dir \
+		--with-mhash --with-xmlrpc --with-iconv --with-iconv-dir --with-xsl --with-pcre-regex --with-freetype-dir \
 		\
 		--disable-cgi --disable-rpath \
 		\
