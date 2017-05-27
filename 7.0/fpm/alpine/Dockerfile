@@ -137,10 +137,7 @@ RUN set -xe \
 	)" \
 	&& apk add --no-cache --virtual .php-rundeps $runDeps \
 	\
-	&& apk del .build-deps \
-	&& pecl install redis-3.1.2 \
-	&& pecl install memcached-3.0.3 \
-	&& docker-php-ext-enable redis memcached
+	&& apk del .build-deps
 
 COPY docker-php-ext-* docker-php-entrypoint /usr/local/bin/
 
