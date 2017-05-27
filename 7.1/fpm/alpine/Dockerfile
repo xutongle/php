@@ -93,7 +93,7 @@ RUN set -xe \
 		LDFLAGS="$PHP_LDFLAGS" \
 	&& docker-php-source extract \
 	&& cd /tmp  \
-	&& wget -c --no-check-certificate https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz \
+	&& wget -c https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz \
 	&& tar xzf libiconv-1.15.tar.gz \
 	&& cd libiconv-1.15 \
 	&& ./configure --prefix=/usr \
